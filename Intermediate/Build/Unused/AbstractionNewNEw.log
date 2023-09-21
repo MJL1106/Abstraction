@@ -1,0 +1,6 @@
+﻿  Building AbstractionNewNEwEditor...
+  Using Visual Studio 2019 14.37.32822 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822) and Windows 10.0.18362.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+  Building 1 action with 16 processes...
+    [1/1] AbstractionNewNEwEditor.target
+  Total time in Parallel executor: 0.49 seconds
+  Total execution time: 0.90 seconds

@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "AbstractionNewNEw",
+			"Path": "D:\\Unreal Projects\\Abstraction\\Source\\AbstractionNewNEw.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "AbstractionNewNEwEditor",
+			"Path": "D:\\Unreal Projects\\Abstraction\\Source\\AbstractionNewNEwEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

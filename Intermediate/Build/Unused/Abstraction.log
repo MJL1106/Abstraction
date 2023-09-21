@@ -1,0 +1,16 @@
+﻿  Using 'git status' to determine working set for adaptive non-unity build (D:\Unreal Projects\Abstraction).
+  Parsing headers for AbstractionNewNEwEditor
+    Running UnrealHeaderTool "D:\Unreal Projects\Abstraction\Abstraction.uproject" "D:\Unreal Projects\Abstraction\Intermediate\Build\Win64\AbstractionNewNEwEditor\Development\AbstractionNewNEwEditor.uhtmanifest" -LogCmds="loginit warning, logexit warning, logdatabase error" -Unattended -WarningsAsErrors -abslog="C:\Users\Matthew Lowe\AppData\Local\UnrealBuildTool\Log_UHT.txt" -installed
+  Reflection code generated for AbstractionNewNEwEditor in 3.8737638 seconds
+  Building AbstractionNewNEwEditor...
+  Using Visual Studio 2019 14.37.32822 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822) and Windows 10.0.18362.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+  Building 5 actions with 16 processes...
+    [1/5] AbstractLogComponent.cpp
+    [2/5] AbstractLogComponent.gen.cpp
+    [3/5] UE4Editor-AbstractionNewNEw-0003.lib
+       Creating library D:\Unreal Projects\Abstraction\Intermediate\Build\Win64\UE4Editor\Development\AbstractionNewNEw\UE4Editor-AbstractionNewNEw-0003.lib and object D:\Unreal Projects\Abstraction\Intermediate\Build\Win64\UE4Editor\Development\AbstractionNewNEw\UE4Editor-AbstractionNewNEw-0003.exp
+    [4/5] UE4Editor-AbstractionNewNEw-0003.dll
+       Creating library D:\Unreal Projects\Abstraction\Intermediate\Build\Win64\UE4Editor\Development\AbstractionNewNEw\UE4Editor-AbstractionNewNEw-0003.suppressed.lib and object D:\Unreal Projects\Abstraction\Intermediate\Build\Win64\UE4Editor\Development\AbstractionNewNEw\UE4Editor-AbstractionNewNEw-0003.suppressed.exp
+    [5/5] AbstractionNewNEwEditor.target
+  Total time in Parallel executor: 1.30 seconds
+  Total execution time: 5.63 seconds
