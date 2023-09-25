@@ -3,6 +3,9 @@
 
 #include "DoorInteractionComponent.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/PlayerController.h"
+#include "Engine/TriggerBox.h"
+#include "Engine/World.h"
 
 // Sets default values for this component's properties
 UDoorInteractionComponent::UDoorInteractionComponent()
@@ -19,9 +22,10 @@ UDoorInteractionComponent::UDoorInteractionComponent()
 void UDoorInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	DesiredRotation = FRotator(0.0f, 90.0f, 0.0f);
-	DeltaRotation = DesiredRotation - GetOwner()->GetActorRotation();
+	StartRotation = GetOwner()->GetActorRotation();
 	FinalRotation = GetOwner()->GetActorRotation() + DesiredRotation;
+	//ensure TimeToRotate is greater than EPSILON
+	CurrentRotationTime = 0.0f;
 	
 }
 
@@ -30,13 +34,22 @@ void UDoorInteractionComponent::BeginPlay()
 void UDoorInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	FRotator CurrentRotation = GetOwner()->GetActorRotation();
 
-	if (!CurrentRotation.Equals(FinalRotation, 5.0f)) 
+	if (CurrentRotationTime < TimeToRotate)
 	{
-		CurrentRotation += DeltaRotation * DeltaTime;
-		GetOwner()->SetActorRotation(CurrentRotation);
+		if (TriggerBox && GetWorld() && GetWorld()->GetFirstLocalPlayerFromController())
+		{
+			APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+			if (PlayerPawn && TriggerBox->IsOverlappingActor(PlayerPawn))
+			{
+				CurrentRotationTime += DeltaTime;
+				const float TimeRatio = FMath::Clamp(CurrentRotationTime / TimeToRotate, 0.0f, 1.0f);
+				const float RotationAlpha = OpenCurve.GetRichCurveConst()->Eval(TimeRatio);
+				const FRotator CurrentRotation = FMath::Lerp(StartRotation, FinalRotation, RotationAlpha);
+				GetOwner()->SetActorRotation(CurrentRotation);
+			}
+		}
 	}
-	// ...
+	
 }
 

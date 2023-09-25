@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Curves/CurveFloat.h"
 #include "DoorInteractionComponent.generated.h"
+
+class ATriggerBox;
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -20,9 +23,22 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	FRotator DesiredRotation;
-	FRotator DeltaRotation;
-	FRotator FinalRotation;
+	UPROPERTY(EditAnywhere)
+	FRotator DesiredRotation = FRotator::ZeroRotator;
+
+	FRotator StartRotation = FRotator::ZeroRotator;
+	FRotator FinalRotation = FRotator::ZeroRotator;
+
+	UPROPERTY(EditAnywhere)
+	float TimeToRotate = 1.0f;
+
+	float CurrentRotationTime = 0.0f;
+
+	UPROPERTY(EditAnywhere)
+	ATriggerBox* TriggerBox;
+
+	UPROPERTY(EditAnywhere)
+	FRuntimeFloatCurve OpenCurve;
 	
 	
 
