@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Blueprint/UserWidget.h"
 #include "AbstractionNewNEwGameModeBase.generated.h"
 
 /**
@@ -13,5 +14,11 @@ UCLASS()
 class ABSTRACTIONNEWNEW_API AAbstractionNewNEwGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+	void StartPlay() override;
+
+	UPROPERTY(EDitDefaultsOnly)
+	TSubclassOf<UUserWidget> ObjectiveWidgetClass;
+
+	UUserWidget* ObjectiveWidget = nullptr;
 };
