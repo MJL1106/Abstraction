@@ -20,5 +20,4 @@ public:
 	UPROPERTY(EDitDefaultsOnly)
 	TSubclassOf<UUserWidget> ObjectiveWidgetClass;
 
-	UUserWidget* ObjectiveWidget = nullptr;
 };
