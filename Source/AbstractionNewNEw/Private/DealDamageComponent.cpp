@@ -15,7 +15,6 @@ UDealDamageComponent::UDealDamageComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	TriggerCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Trigger Capsule"));
-	TriggerCapsule->SetRelativeLocation(FVector::ZeroVector);
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &UDealDamageComponent::OnOverlapBegin);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &UDealDamageComponent::OnOverlapEnd);
 }

@@ -19,18 +19,8 @@ AFireDamageActor::AFireDamageActor()
 	}
 	ParticleSystemComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle System"));
 	ParticleSystemComponent->SetupAttachment(RootComponent);
-
 }
 
-void AFireDamageActor::PostActorCreated()
-{
-	if (DealDamageComponent->GetTriggerCapsule())
-	{
-		DealDamageComponent->GetTriggerCapsule()->SetRelativeLocation(FVector::ZeroVector);
-	}
-
-	ParticleSystemComponent->SetRelativeLocation(FVector::ZeroVector);
-}
 
 // Called when the game starts or when spawned
 void AFireDamageActor::BeginPlay()
