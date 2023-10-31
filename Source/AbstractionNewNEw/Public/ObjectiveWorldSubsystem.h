@@ -9,6 +9,7 @@
 #include "ObjectiveComponent.h"
 #include "ObjectiveWorldSubsystem.generated.h"
 
+class AMyCameraActor;
 
 UCLASS()
 class ABSTRACTIONNEWNEW_API UObjectiveWorldSubsystem : public UWorldSubsystem
@@ -29,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void RemoveObjective(UObjectiveComponent* ObjectiveComponent);
 
+	UFUNCTION(BlueprintCallable)
+		void AddCamera(AMyCameraActor* CameraComponent);
+
 	void OnObjectiveStateChanged(UObjectiveComponent* ObjectiveComponent, EObjectiveState ObjectiveState);
 
 private:
@@ -38,5 +42,8 @@ private:
 	//sign up for callback onchanged
 
 	TArray<UObjectiveComponent*> Objectives;
+
+
+	TArray<AMyCameraActor*> Cameras;
 	
 };

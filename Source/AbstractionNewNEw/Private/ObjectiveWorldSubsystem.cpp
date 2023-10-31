@@ -3,6 +3,7 @@
 
 #include "ObjectiveWorldSubsystem.h"
 #include "Kismet/GameplayStatics.h"
+#include "MyCameraActor.h"
 
 
 void UObjectiveWorldSubsystem::CreateObjectiveWidget(TSubclassOf<UUserWidget> ObjectiveWidgetClass)
@@ -51,6 +52,12 @@ void UObjectiveWorldSubsystem::RemoveObjective(UObjectiveComponent* ObjectiveCom
 {
 	Objectives.Remove(ObjectiveComponent);
 }
+
+void UObjectiveWorldSubsystem::AddCamera(AMyCameraActor* CameraComponent) {
+
+	Cameras.Add(CameraComponent);
+}
+
 
 void UObjectiveWorldSubsystem::OnObjectiveStateChanged(UObjectiveComponent* ObjectiveComponent, EObjectiveState ObjectiveState)
 {
