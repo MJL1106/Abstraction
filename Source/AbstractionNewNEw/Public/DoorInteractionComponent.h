@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InteractionComponent.h"
 #include "Components/ActorComponent.h"
 #include "Curves/CurveFloat.h"
 #include "DoorInteractionComponent.generated.h"
 
-class ATriggerBox;
 
 UENUM()
 enum class EDoorState
@@ -20,7 +20,7 @@ enum class EDoorState
 
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class ABSTRACTIONNEWNEW_API UDoorInteractionComponent : public UActorComponent
+class ABSTRACTIONNEWNEW_API UDoorInteractionComponent : public UInteractionComponent
 {
 	GENERATED_BODY()
 
@@ -28,23 +28,29 @@ public:
 	UDoorInteractionComponent();
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	DECLARE_EVENT(FDoorInteractionComponent, FOpened)
-	FOpened& OnOpened() { return OpenedEvent; }
-
-	FOpened OpenedEvent;
-
 	static void OnDebugToggled(IConsoleVariable* Var);
-	void DebugDraw();
-	void OnDoorOpen();
-	void OnDoorClose();
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	void InteractionStart() override;
+
+	UFUNCTION(BlueprintCallable)
+	void OpenDoor();
+
+	void OnDoorOpen();
+
+
+	void OnDoorClose();
+
+	UFUNCTION(BlueprintCallable)
+	bool IsOpen() { return DoorState == EDoorState::DS_Open; }
+
+	void DebugDraw();
+
 	UPROPERTY(EditAnywhere)
-		FRotator DesiredRotation = FRotator::ZeroRotator;
+	FRotator DesiredRotation = FRotator::ZeroRotator;
 
 	FRotator StartRotation = FRotator::ZeroRotator;
 	FRotator FinalRotation = FRotator::ZeroRotator;
@@ -53,9 +59,6 @@ protected:
 		float TimeToRotate = 1.0f;
 
 	float CurrentRotationTime = 0.0f;
-
-	UPROPERTY(EditAnywhere)
-		ATriggerBox* TriggerBox;
 
 	UPROPERTY(EditAnywhere)
 		FRuntimeFloatCurve OpenCurve;

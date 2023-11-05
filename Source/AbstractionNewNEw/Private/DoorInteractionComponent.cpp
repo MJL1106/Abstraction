@@ -20,12 +20,20 @@ static TAutoConsoleVariable<bool> CVarToggleDebugDoor(
 // Sets default values for this component's properties
 UDoorInteractionComponent::UDoorInteractionComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
+
 	PrimaryComponentTick.bCanEverTick = true;
 	DoorState = EDoorState::DS_Closed;
 
 	CVarToggleDebugDoor.AsVariable()->SetOnChangedCallback(FConsoleVariableDelegate::CreateStatic(&UDoorInteractionComponent::OnDebugToggled));
+}
+
+void UDoorInteractionComponent::InteractionStart()
+{
+	Super::InteractionStart();
+	if (InteractingActor)
+	{
+		OpenDoor();
+	}
 }
 
 
@@ -40,44 +48,46 @@ void UDoorInteractionComponent::BeginPlay()
 	
 }
 
+void UDoorInteractionComponent::OpenDoor()
+{
+	if (IsOpen() || DoorState == EDoorState::DS_Opening)
+	{
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Opening door..."));
+	DoorState = EDoorState::DS_Opening;
+	CurrentRotationTime = 0.0f;
+}
+
 
 // Called every frame
 void UDoorInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (TriggerBox && GetWorld() && GetWorld()->GetFirstLocalPlayerFromController())
-	{
-		APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
-		if (DoorState == EDoorState::DS_Closed) {
-			if (PlayerPawn && TriggerBox->IsOverlappingActor(PlayerPawn)) {
-				DoorState = EDoorState::DS_Opening;
-				CurrentRotationTime = 0.0f;
-			}
-		}
-
-		else if (DoorState == EDoorState::DS_Opening) {
-			CurrentRotationTime += DeltaTime;
-			const float TimeRatio = FMath::Clamp(CurrentRotationTime / TimeToRotate, 0.0f, 1.0f);
-			const float RotationAlpha = OpenCurve.GetRichCurveConst()->Eval(TimeRatio);
-			const FRotator CurrentRotation = FMath::Lerp(StartRotation, FinalRotation, RotationAlpha);
-			GetOwner()->SetActorRotation(CurrentRotation);
+	
+	if (DoorState == EDoorState::DS_Opening) {
+		CurrentRotationTime += DeltaTime;
+		const float TimeRatio = FMath::Clamp(CurrentRotationTime / TimeToRotate, 0.0f, 1.0f);
+		const float RotationAlpha = OpenCurve.GetRichCurveConst()->Eval(TimeRatio);
+		const FRotator CurrentRotation = FMath::Lerp(StartRotation, FinalRotation, RotationAlpha);
+		GetOwner()->SetActorRotation(CurrentRotation);
 			if (TimeRatio >= 1.0f) {
 				OnDoorOpen();
 			}
 
-		}else if (DoorState == EDoorState::DS_Open && !(PlayerPawn && TriggerBox->IsOverlappingActor(PlayerPawn)))
-			{
-				CurrentRotationTime -= DeltaTime;
-				const float TimeRatio = FMath::Clamp(CurrentRotationTime / TimeToRotate, 0.0f, 1.0f);
-				const float RotationAlpha = OpenCurve.GetRichCurveConst()->Eval(TimeRatio);
-				const FRotator CurrentRotation = FMath::Lerp(StartRotation, FinalRotation, RotationAlpha);
-				GetOwner()->SetActorRotation(CurrentRotation);
-				if (TimeRatio == 0.0f) {
-					OnDoorClose();
-				}
-		}
 	}
+	else if (DoorState == EDoorState::DS_Open)
+	{
+		CurrentRotationTime -= DeltaTime;
+		const float TimeRatio = FMath::Clamp(CurrentRotationTime / TimeToRotate, 0.0f, 1.0f);
+		const float RotationAlpha = OpenCurve.GetRichCurveConst()->Eval(TimeRatio);
+		const FRotator CurrentRotation = FMath::Lerp(StartRotation, FinalRotation, RotationAlpha);
+		GetOwner()->SetActorRotation(CurrentRotation);
+			if (TimeRatio == 0.0f) {
+			OnDoorClose();
+			}
+	}
+
 	DebugDraw();
 }
 
@@ -89,14 +99,14 @@ void UDoorInteractionComponent::OnDoorOpen()
 	{
 		ObjectiveComponent->SetState(EObjectiveState::OS_Completed);
 	}
-	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("DoorOpened"));
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("DoorOpened"));
+	InteractionSuccess.Broadcast();
 }
 
 void UDoorInteractionComponent::OnDoorClose()
 {
 	DoorState = EDoorState::DS_Closed;
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("DoorClosed"));
-	OpenedEvent.Broadcast();
 }
 
 void UDoorInteractionComponent::OnDebugToggled(IConsoleVariable* Var)
