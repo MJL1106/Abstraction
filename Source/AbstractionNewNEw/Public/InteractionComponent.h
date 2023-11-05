@@ -50,5 +50,7 @@ protected:
 
 	AActor* InteractingActor = nullptr;
 
+	bool bIsPlayerOverlapping;
+
 		
 };

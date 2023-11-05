@@ -22,6 +22,8 @@ UInteractionComponent::UInteractionComponent()
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &UInteractionComponent::OnOverlapEnd);
 
 	InteractingActor = nullptr;
+	//bIsPlayerOverlapping = false;
+	
 }
 
 void UInteractionComponent::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -30,6 +32,7 @@ void UInteractionComponent::OnOverlapBegin(class UPrimitiveComponent* Overlapped
 
 	if (OtherActor->ActorHasTag("Player"))
 	{
+		//bIsPlayerOverlapping = true;
 		InteractingActor = OtherActor;
 	}
 }
@@ -37,6 +40,7 @@ void UInteractionComponent::OnOverlapBegin(class UPrimitiveComponent* Overlapped
 void UInteractionComponent::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	UE_LOG(LogTemp, Warning, TEXT("UInteractionComponent::OnOverlapEnd"));
+	//bIsPlayerOverlapping = false;
 	InteractingActor = nullptr;
 }
 

@@ -78,6 +78,7 @@ void AAbstractionPlayerCharacter::OnDeath(bool IsFellOut)
 
 void AAbstractionPlayerCharacter::StartInteraction()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Start interaction called"));
 	OnInteractionStart.Broadcast();
 }
 
