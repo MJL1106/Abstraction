@@ -7,6 +7,7 @@
 #include "HealthComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/InputComponent.h"
+#include "DamageHandlerComponent.h"
 
 // Sets default values
 AAbstractionPlayerCharacter::AAbstractionPlayerCharacter(const FObjectInitializer& ObjectInitializer) 
@@ -16,6 +17,7 @@ AAbstractionPlayerCharacter::AAbstractionPlayerCharacter(const FObjectInitialize
 	PrimaryActorTick.bCanEverTick = true;
 
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+	DamageHandlerComponent = CreateDefaultSubobject<UDamageHandlerComponent>(TEXT("DamageHandlerComponent"));
 	ParticleSystemComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle System"));
 	ParticleSystemComponent->SetupAttachment(RootComponent);
 
@@ -58,12 +60,23 @@ float AAbstractionPlayerCharacter::TakeDamage(float DamageAmount, struct FDamage
 	if (HealthComponent)
 	{
 		HealthComponent->TakeDamage(Damage);
+		float CurrentHealth = HealthComponent->GetCurrentHealth();
+		UE_LOG(LogTemp, Warning, TEXT("AAbstractionPlayerCharacter::TakeDamage Health %.2f"), CurrentHealth);
+
 		if (HealthComponent->IsDead())
 		{
 			OnDeath(false);
 		}
 	}
 	return Damage;
+}
+
+void AAbstractionPlayerCharacter::SetOnFire(float BaseDamage, float DamageTotalTime, float TakeDamageInterval)
+{
+	if (DamageHandlerComponent)
+	{
+		DamageHandlerComponent->TakeFireDamage(BaseDamage, DamageTotalTime, TakeDamageInterval);
+	}
 }
 
 

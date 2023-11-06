@@ -8,6 +8,7 @@
 
 class UHealthComponent;
 class UParticleSystemComponent;
+class UDamageHandlerComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionStart);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionCancel);
@@ -16,6 +17,8 @@ UCLASS()
 class ABSTRACTIONNEWNEW_API AAbstractionPlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
+
+	friend class UDamageHandlerComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -28,6 +31,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* ParticleSystemComponent;
+
+	UPROPERTY(EditAnywhere)
+	UDamageHandlerComponent* DamageHandlerComponent;
 
 
 	void StartInteraction();
@@ -45,7 +51,9 @@ public:
 	virtual void FellOutOfWorld(const class UDamageType& dmgType) override;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-	void SetOnFire(UParticleSystemComponent* FireParticleSystemComponent);
+
+	void SetOnFire(float BaseDamage, float DamageTotalTime, float TakeDamageInterval);
+
 
 	FOnInteractionStart OnInteractionStart;
 	FOnInteractionCancel OnInteractionCancel;

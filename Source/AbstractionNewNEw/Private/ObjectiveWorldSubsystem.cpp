@@ -34,7 +34,9 @@ void UObjectiveWorldSubsystem::DisplayObjectiveWidget()
 {
 	if (ObjectiveWidget)
 	{
-		ObjectiveWidget->AddToViewport();
+		if (!ObjectiveWidget->IsInViewport()) {
+			ObjectiveWidget->AddToViewport();
+		}
 		ObjectiveWidget->UpdateObjectiveText(GetCompletedObjectiveCount(), Objectives.Num());
 	}
 }
@@ -131,16 +133,17 @@ void UObjectiveWorldSubsystem::AddCamera(AMyCameraActor* CameraComponent) {
 
 void UObjectiveWorldSubsystem::OnObjectiveStateChanged(UObjectiveComponent* ObjectiveComponent, EObjectiveState ObjectiveState)
 {
+	if (Objectives.Num() == 0 || !Objectives.Contains(ObjectiveComponent))
+	{
+		return;
+	}
+
 	if (ObjectiveWidget && ObjectivesCompleteWidget)
 	{
-		if (GetCompletedObjectiveCount() == Objectives.Num())
+		if ((ObjectiveState == EObjectiveState::OS_Completed) && GetCompletedObjectiveCount() == Objectives.Num())
 		{
-			RemoveObjectiveWidget();
 			DisplayObjectivesCompleteWidget();
 		}
-		else
-		{
 			DisplayObjectiveWidget();
-		}
 	}
 }

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -32,6 +32,12 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	float BaseDamage = 50.0f;
+
+	UPROPERTY(EditAnywhere)
+		float DamageTotalTime = 5.0f;
+
+	UPROPERTY(EditAnywhere)
+		float TakeDamageInterval = 5.0f;
 
 	UPROPERTY(EditAnywhere, NoClear)
 	UCapsuleComponent* TriggerCapsule;
