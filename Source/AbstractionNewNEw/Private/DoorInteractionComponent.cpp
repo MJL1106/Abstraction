@@ -32,7 +32,6 @@ void UDoorInteractionComponent::InteractionStart()
 	Super::InteractionStart();
 	if (InteractingActor)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UDoorInteractionComponent::InteractingActor working"));
 		OpenDoor();
 	}
 }
@@ -51,7 +50,6 @@ void UDoorInteractionComponent::BeginPlay()
 
 void UDoorInteractionComponent::OpenDoor()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Opening door..."));
 	if (IsOpen() || DoorState == EDoorState::DS_Opening)
 	{
 		return;
@@ -77,17 +75,17 @@ void UDoorInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 			}
 
 	}
-	//else if (DoorState == EDoorState::DS_Open && !bIsPlayerOverlapping)
-	//{
-		//CurrentRotationTime -= DeltaTime;
-		//const float TimeRatio = FMath::Clamp(CurrentRotationTime / TimeToRotate, 0.0f, 1.0f);
-		//const float RotationAlpha = OpenCurve.GetRichCurveConst()->Eval(TimeRatio);
-		//const FRotator CurrentRotation = FMath::Lerp(StartRotation, FinalRotation, RotationAlpha);
-		//GetOwner()->SetActorRotation(CurrentRotation);
-			//if (TimeRatio == 0.0f) {
-			//OnDoorClose();
-			//}
-	//}
+	else if (DoorState == EDoorState::DS_Open && !bIsPlayerOverlapping)
+	{
+		CurrentRotationTime -= DeltaTime;
+		const float TimeRatio = FMath::Clamp(CurrentRotationTime / TimeToRotate, 0.0f, 1.0f);
+		const float RotationAlpha = OpenCurve.GetRichCurveConst()->Eval(TimeRatio);
+		const FRotator CurrentRotation = FMath::Lerp(StartRotation, FinalRotation, RotationAlpha);
+		GetOwner()->SetActorRotation(CurrentRotation);
+			if (TimeRatio == 0.0f) {
+			OnDoorClose();
+			}
+	}
 
 	DebugDraw();
 }
@@ -100,7 +98,7 @@ void UDoorInteractionComponent::OnDoorOpen()
 	{
 		ObjectiveComponent->SetState(EObjectiveState::OS_Completed);
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("DoorOpened"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("DoorOpened"));
 	InteractionSuccess.Broadcast();
 }
 

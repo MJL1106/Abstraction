@@ -7,6 +7,9 @@
 void AAbstractionNewNEwGameModeBase::StartPlay()
 {
 	Super::StartPlay();
-
+    if (UObjectiveWorldSubsystem* ObjectiveSubsystem = GetWorld()->GetSubsystem<UObjectiveWorldSubsystem>())
+    {
+        ObjectiveSubsystem->OnMapStart();
+    }
 }
 

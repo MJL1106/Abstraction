@@ -17,17 +17,26 @@ void UObjectiveWorldSubsystem::Deinitialize()
 
 void UObjectiveWorldSubsystem::CreateObjectiveWidgets()
 {
-	if (ObjectiveWidget == nullptr)
+	// Check if the widgets have already been created
+	if (ObjectiveWidget == nullptr || ObjectivesCompleteWidget == nullptr)
 	{
 		AAbstractionNewNEwGameModeBase* GameMode = Cast<AAbstractionNewNEwGameModeBase>(GetWorld()->GetAuthGameMode());
 		if (GameMode)
 		{
 			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-			ObjectiveWidget = CreateWidget<UObjectiveHud>(PlayerController, GameMode->ObjectiveWidgetClass);
-			ObjectivesCompleteWidget = CreateWidget<UUserWidget>(PlayerController, GameMode->ObjectivesCompleteWidgetClass);
-
+			if (PlayerController)
+			{
+				// Attempt to create the Objective HUD widget
+				ObjectiveWidget = CreateWidget<UObjectiveHud>(PlayerController, GameMode->ObjectiveWidgetClass);
+				// Attempt to create the Objectives Complete widget
+				ObjectivesCompleteWidget = CreateWidget<UUserWidget>(PlayerController, GameMode->ObjectivesCompleteWidgetClass);
+			}
+	
 		}
+
 	}
+
+
 }
 
 void UObjectiveWorldSubsystem::DisplayObjectiveWidget()
@@ -144,6 +153,7 @@ void UObjectiveWorldSubsystem::OnObjectiveStateChanged(UObjectiveComponent* Obje
 		{
 			DisplayObjectivesCompleteWidget();
 		}
+
 			DisplayObjectiveWidget();
 	}
 }

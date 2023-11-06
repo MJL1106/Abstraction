@@ -22,25 +22,25 @@ UInteractionComponent::UInteractionComponent()
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &UInteractionComponent::OnOverlapEnd);
 
 	InteractingActor = nullptr;
-	//bIsPlayerOverlapping = false;
+	bIsPlayerOverlapping = false;
 	
 }
 
 void UInteractionComponent::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UInteractionComponent::OnOverlapBegin"));
 
 	if (OtherActor->ActorHasTag("Player"))
 	{
-		//bIsPlayerOverlapping = true;
+		bIsPlayerOverlapping = true;
 		InteractingActor = OtherActor;
 	}
 }
 
 void UInteractionComponent::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UInteractionComponent::OnOverlapEnd"));
-	//bIsPlayerOverlapping = false;
+	FVector PlayerPosition = OtherActor->GetActorLocation();
+	FVector DoorPosition = GetOwner()->GetActorLocation();
+	bIsPlayerOverlapping = false;
 	InteractingActor = nullptr;
 }
 

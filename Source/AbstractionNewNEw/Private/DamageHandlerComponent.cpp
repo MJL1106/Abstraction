@@ -39,7 +39,6 @@ void UDamageHandlerComponent::TickComponent(float DeltaTime, ELevelTick TickType
 		
 			if (ActiveDamageInfo.GetValue().AccumulatedTime > ActiveDamageInfo.GetValue().Lifetime)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Resetting ActiveDamageInfo because AccumulatedTime has exceeded Lifetime"));
 				if (PlayerCharacter->ParticleSystemComponent)
 				{
 					PlayerCharacter->ParticleSystemComponent->Deactivate();
@@ -60,7 +59,6 @@ void UDamageHandlerComponent::TickComponent(float DeltaTime, ELevelTick TickType
 					TSubclassOf<UDamageType> const ValidDamageTypeClass = TSubclassOf<UDamageType>(UDamageType::StaticClass());
 					FDamageEvent DamageEvent(ValidDamageTypeClass);
 
-					UE_LOG(LogTemp, Warning, TEXT("Applying fire damage: %f"), ModifiedDamage);
 
 					PlayerCharacter->TakeDamage(ModifiedDamage, DamageEvent, nullptr, GetOwner());
 					ActiveDamageInfo.GetValue().CurrentIntervalTime = 0.0f;
@@ -72,7 +70,6 @@ void UDamageHandlerComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 void UDamageHandlerComponent::TakeFireDamage(float BaseDamage, float DamageTotalTime, float TakeDamageInterval)
 {
-	UE_LOG(LogTemp, Warning, TEXT("TakeFireDamage called with BaseDamage: %f, DamageTotalTime: %f, TakeDamageInterval: %f"), BaseDamage, DamageTotalTime, TakeDamageInterval); 
 	FScopeLock Lock(&CriticalSection);
 	if (ActiveDamageInfo.IsSet())
 	{
