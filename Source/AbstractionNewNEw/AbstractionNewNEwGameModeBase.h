@@ -17,7 +17,10 @@ class ABSTRACTIONNEWNEW_API AAbstractionNewNEwGameModeBase : public AGameModeBas
 public:
 	void StartPlay() override;
 
-	UPROPERTY(EDitDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> ObjectiveWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> ObjectivesCompleteWidgetClass;
 
 };

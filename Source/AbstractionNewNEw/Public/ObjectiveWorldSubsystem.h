@@ -5,11 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Subsystems/WorldSubsystem.h"
-#include "Blueprint/UserWidget.h"
 #include "ObjectiveComponent.h"
 #include "ObjectiveWorldSubsystem.generated.h"
 
 class AMyCameraActor;
+class UObjectiveHud;
+class UUserWidget;
 
 UCLASS()
 class ABSTRACTIONNEWNEW_API UObjectiveWorldSubsystem : public UWorldSubsystem
@@ -17,9 +18,6 @@ class ABSTRACTIONNEWNEW_API UObjectiveWorldSubsystem : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	void CreateObjectiveWidget(TSubclassOf<UUserWidget> ObjectiveWidgetClass);
-	void DisplayObjectiveWidget();
-
 
 	UFUNCTION(BlueprintCallable)
 		FString GetCurrentObjectiveDescription();
@@ -33,10 +31,28 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void AddCamera(AMyCameraActor* CameraComponent);
 
+	UFUNCTION(BlueprintCallable)
+		void OnMapStart();
+
+
+protected:
+	virtual void Deinitialize() override;
+
+	void CreateObjectiveWidgets();
+
+	void DisplayObjectiveWidget();
+	void RemoveObjectiveWidget();
+
+	void DisplayObjectivesCompleteWidget();
+	void RemoveObjectivesCompleteWidget();
+
+	uint32 GetCompletedObjectiveCount();
+
 	void OnObjectiveStateChanged(UObjectiveComponent* ObjectiveComponent, EObjectiveState ObjectiveState);
 
 private:
-	UUserWidget* ObjectiveWidget = nullptr;
+	UObjectiveHud* ObjectiveWidget = nullptr;
+	UUserWidget* ObjectivesCompleteWidget = nullptr;
 
 	//add remove them
 	//sign up for callback onchanged
