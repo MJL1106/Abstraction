@@ -10,6 +10,7 @@ class UHealthComponent;
 class UParticleSystemComponent;
 class UDamageHandlerComponent;
 
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionStart);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractionCancel);
 
@@ -29,6 +30,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UHealthComponent* HealthComponent;
 
+	UFUNCTION()
+		void OnDeathTimerFinished();
+
 	UPROPERTY(EditAnywhere)
 	UParticleSystemComponent* ParticleSystemComponent;
 
@@ -38,6 +42,11 @@ protected:
 
 	void StartInteraction();
 	void StopInteraction();
+
+	UPROPERTY(EditAnywhere)
+	float TimeRestartLevelAfterDeath = 2.0f;
+
+	FTimerHandle RestartLevelTimerHandle;
 
 public:	
 
@@ -52,9 +61,19 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Abstraction")
 	void SetOnFire(float BaseDamage, float DamageTotalTime, float TakeDamageInterval);
+
+	UFUNCTION(BlueprintCallable)
+		const bool IsAlive() const;
+
+	UFUNCTION(BlueprintCallable)
+		const float GetCurrentHealth() const;
+
+
 
 
 	FOnInteractionStart OnInteractionStart;
 	FOnInteractionCancel OnInteractionCancel;
+
 };

@@ -20,6 +20,7 @@ public:
 	bool IsDead() { return CurrentHealth <= FLT_EPSILON; }
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float GetCurrentHealth() const { return CurrentHealth; }
+	void SetCurrentHealth(float health) { CurrentHealth = health; }
 
 
 protected:
