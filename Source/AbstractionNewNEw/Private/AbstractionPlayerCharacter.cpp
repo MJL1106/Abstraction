@@ -50,8 +50,12 @@ void AAbstractionPlayerCharacter::SetupPlayerInputComponent(UInputComponent* Pla
 
 void AAbstractionPlayerCharacter::FellOutOfWorld(const UDamageType& dmgType)
 {
-	HealthComponent->SetCurrentHealth(0.0f);
-	OnDeath(true);
+	float LethalDamage = 100.0f; 
+
+	TSubclassOf<UDamageType> const ValidDamageTypeClass = TSubclassOf<UDamageType>(UDamageType::StaticClass());
+	FDamageEvent DamageEvent(ValidDamageTypeClass);
+
+	TakeDamage(LethalDamage, DamageEvent, nullptr, nullptr);
 }
 
 
@@ -59,12 +63,10 @@ void AAbstractionPlayerCharacter::FellOutOfWorld(const UDamageType& dmgType)
 float AAbstractionPlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	UE_LOG(LogTemp, Warning, TEXT("AAbstractionPlayerCharacter::TakeDamage Damage %.2f"), Damage);
 	if (HealthComponent &&  !HealthComponent->IsDead())
 	{
 		HealthComponent->TakeDamage(Damage);
 		float CurrentHealth = HealthComponent->GetCurrentHealth();
-		UE_LOG(LogTemp, Warning, TEXT("AAbstractionPlayerCharacter::TakeDamage Health %.2f"), CurrentHealth);
 
 		if (HealthComponent->IsDead())
 		{
