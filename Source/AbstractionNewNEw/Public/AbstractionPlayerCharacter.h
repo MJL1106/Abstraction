@@ -46,6 +46,11 @@ protected:
 
 	FTimerHandle RestartLevelTimerHandle;
 
+	APlayerController* PC;
+
+	UPROPERTY(EditAnywhere, Category="Effects")
+	TSubclassOf<UCameraShake> CamShake;
+
 public:	
 
 	AAbstractionPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());

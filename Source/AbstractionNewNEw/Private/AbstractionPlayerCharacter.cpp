@@ -27,6 +27,8 @@ AAbstractionPlayerCharacter::AAbstractionPlayerCharacter(const FObjectInitialize
 void AAbstractionPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	PC = GetWorld()->GetFirstPlayerController();
 	
 }
 
@@ -139,6 +141,7 @@ void AAbstractionPlayerCharacter::HandleItemCollected()
 {
 	ItemsCollected++;
 	//Play effects here
+	PC->PlayerCameraManager->PlayCameraShake(CamShake, 1.0f);
 
 	ItemCollected();
 }
