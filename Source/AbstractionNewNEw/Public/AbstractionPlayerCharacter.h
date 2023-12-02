@@ -33,8 +33,6 @@ protected:
 	UFUNCTION()
 		void OnDeathTimerFinished();
 
-	UPROPERTY(EditAnywhere)
-	UParticleSystemComponent* ParticleSystemComponent;
 
 	UPROPERTY(EditAnywhere)
 	UDamageHandlerComponent* DamageHandlerComponent;
@@ -65,6 +63,15 @@ public:
 	void SetOnFire(float BaseDamage, float DamageTotalTime, float TakeDamageInterval);
 
 	UFUNCTION(BlueprintCallable)
+		void HandleItemCollected();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void ItemCollected();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		int ItemsCollected = 0;
+
+	UFUNCTION(BlueprintCallable)
 		const bool IsAlive() const;
 
 	UFUNCTION(BlueprintCallable)
@@ -75,5 +82,8 @@ public:
 
 	FOnInteractionStart OnInteractionStart;
 	FOnInteractionCancel OnInteractionCancel;
+
+	UPROPERTY(EditAnywhere)
+		UParticleSystemComponent* ParticleSystemComponent;
 
 };
