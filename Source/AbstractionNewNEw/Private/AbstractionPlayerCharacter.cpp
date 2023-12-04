@@ -143,5 +143,7 @@ void AAbstractionPlayerCharacter::HandleItemCollected()
 	//Play effects here
 	PC->PlayerCameraManager->PlayCameraShake(CamShake, 1.0f);
 
+	PC->PlayDynamicForceFeedback(ForceFeedbackIntensity, ForceFeedbackDuration, true, false, true, false,
+		EDynamicForceFeedbackAction::Start);
 	ItemCollected();
 }
