@@ -12,6 +12,8 @@ AInteractableDoor::AInteractableDoor() : Super()
 	{
 		DoorInteractionComponent->GetTriggerCapsule()->SetupAttachment(RootComponent);
 	}
+	DoorOpenSound = CreateDefaultSubobject<UAudioComponent>(TEXT("DoorOpenSound"));
+	DoorOpenSound->SetupAttachment(RootComponent);
 }
 
 void AInteractableDoor::BeginPlay()
@@ -22,6 +24,12 @@ void AInteractableDoor::BeginPlay()
 
 void AInteractableDoor::OnInteractionSuccess()
 {
-	OnDoorOpen.Broadcast();
+	OnDoorOpen.Broadcast();    
+
+
+	if (DoorOpenSound)
+	{
+		DoorOpenSound->Play();
+	}
 }
 

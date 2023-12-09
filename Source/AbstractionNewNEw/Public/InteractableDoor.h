@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/StaticMeshActor.h"
+#include "Components/AudioComponent.h"
 #include "InteractableDoor.generated.h"
 
 class UDoorInteractionComponent;
@@ -30,6 +31,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, NoClear)
 	UDoorInteractionComponent* DoorInteractionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Audio")
+		UAudioComponent* DoorOpenSound;
 	
 };
 

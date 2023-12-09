@@ -25,6 +25,7 @@ UDoorInteractionComponent::UDoorInteractionComponent()
 	DoorState = EDoorState::DS_Closed;
 
 	CVarToggleDebugDoor.AsVariable()->SetOnChangedCallback(FConsoleVariableDelegate::CreateStatic(&UDoorInteractionComponent::OnDebugToggled));
+
 }
 
 void UDoorInteractionComponent::InteractionStart()
@@ -54,6 +55,7 @@ void UDoorInteractionComponent::OpenDoor()
 	{
 		return;
 	}
+
 	DoorState = EDoorState::DS_Opening;
 	CurrentRotationTime = 0.0f;
 }
