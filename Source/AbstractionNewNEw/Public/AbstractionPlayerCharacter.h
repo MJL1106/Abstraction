@@ -79,6 +79,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void ItemCollected();
 
+	UFUNCTION(BlueprintImplementableEvent)
+		void DoorOpenInteractionStarted(AActor* InteractableActor);
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		int ItemsCollected = 0;
 

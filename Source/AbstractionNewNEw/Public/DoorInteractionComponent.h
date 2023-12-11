@@ -30,14 +30,16 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	static void OnDebugToggled(IConsoleVariable* Var);
 
+	UFUNCTION(BlueprintCallable)
+		void OpenDoor();
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	void InteractionStart() override;
 
-	UFUNCTION(BlueprintCallable)
-	void OpenDoor();
 
 	void OnDoorOpen();
 
@@ -48,6 +50,8 @@ protected:
 	bool IsOpen() { return DoorState == EDoorState::DS_Open; }
 
 	void DebugDraw();
+
+	void InteractionRequested();
 
 	UPROPERTY(EditAnywhere)
 	FRotator DesiredRotation = FRotator::ZeroRotator;
