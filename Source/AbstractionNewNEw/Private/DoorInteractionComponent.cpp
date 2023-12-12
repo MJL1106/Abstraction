@@ -10,6 +10,7 @@
 #include "DrawDebugHelpers.h"
 #include "ObjectiveComponent.h"
 #include "AbstractionPlayerCharacter.h"
+
 constexpr float FLT_METERS(float meters) { return meters * 100.0f; }
 
 static TAutoConsoleVariable<bool> CVarToggleDebugDoor(
@@ -59,6 +60,7 @@ void UDoorInteractionComponent::OpenDoor()
 
 	DoorState = EDoorState::DS_Opening;
 	CurrentRotationTime = 0.0f;
+
 
 	InteractionRequested();
 }
@@ -134,7 +136,6 @@ void UDoorInteractionComponent::InteractionRequested()
 	AAbstractionPlayerCharacter* APC = Cast<AAbstractionPlayerCharacter>(InteractingActor);
 	if (APC)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("InteractionRequested: Casting succeeded, calling DoorOpenInteractionStarted."));
 		APC->DoorOpenInteractionStarted(GetOwner());
 	}
 }

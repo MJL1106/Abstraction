@@ -24,17 +24,17 @@ void AInteractableDoor::BeginPlay()
 
 void AInteractableDoor::OpenDoor()
 {
+
 	DoorInteractionComponent->OpenDoor();
 }
 
 void AInteractableDoor::OnInteractionSuccess()
 {
-	OnDoorOpen.Broadcast();    
-
-
 	if (DoorOpenSound)
 	{
 		DoorOpenSound->Play();
 	}
+	OnDoorOpen.Broadcast();    
+
 }
 
